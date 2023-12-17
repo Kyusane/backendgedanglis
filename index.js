@@ -15,11 +15,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  console.log(`Received a ${req.method} request to ${req.path}`);
-  next();
-});
-
 app.get("/", (req, res) => {
   res.json({
     mssg: "All is okay",

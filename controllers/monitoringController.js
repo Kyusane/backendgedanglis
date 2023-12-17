@@ -80,7 +80,7 @@ const graphGet = (req, res) => {
      try {
           db.query(getGraph, (err, datas) => {
                if (err) throw err
-               res.status(200).json({ deviceId: deviceId, date: date, data: datas })
+               res.status(200).json({ deviceId: deviceId, date: `${day}/${month}/${year}`, data: datas })
           })
      } catch (error) {
           res.status(400).json({ error: error.message })

@@ -65,6 +65,7 @@ const singlePost = async (req, res) => {
 
 const graphGet = (req, res) => {
      const { deviceId, date } = req.params
+     console.log(date)
      getGraph = `SELECT 
      AVG(tegangan) AS tegangan,
      AVG(arus) AS arus,
@@ -77,7 +78,6 @@ const graphGet = (req, res) => {
      AND date = '${date}'
      AND HOUR(STR_TO_DATE(time, '%H.%i.%s')) BETWEEN 6 AND 18
      GROUP BY date, HOUR(STR_TO_DATE(time, '%H.%i.%s'));`
-
      try {
           db.query(getGraph, (err, datas) => {
                if (err) throw err

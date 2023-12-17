@@ -234,7 +234,6 @@ const userChangeIsActive = async (req, res) => {
 const userDelete = async (req,res) => {
      const { target } = req.body
      const { authorization } = req.headers
-
      try {
           if (!authorization) {
                return res.status(401).json({ error: "Authorization token required" })

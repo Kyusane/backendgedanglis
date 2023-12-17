@@ -5,6 +5,6 @@ const {singlePost , singleGet, graphGet} = require('../controllers/monitoringCon
 
 router.post('/spost',singlePost)
 router.get('/sget/:deviceId',singleGet)
-router.get('/graph/:deviceId/:date',graphGet)
+router.get('/graph/:deviceId/:day/:month/:year',graphGet)
 
 module.exports = router

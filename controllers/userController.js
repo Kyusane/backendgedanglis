@@ -21,7 +21,7 @@ const userLogin = async (req, res) => {
                }
 
                if (fields[0].isactive == 0) {
-                    return res.status(400).json({ error: "Account ada dinonaktifkan" })
+                    return res.status(400).json({ error: "Account dinonaktifkan" })
                }
 
                const matching = await bcrypt.compare(password, fields[0].password)

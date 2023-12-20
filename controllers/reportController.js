@@ -33,7 +33,19 @@ const getReportData = async (req, res) => {
 
 const getTrackReport = (req, res) => {
   const { deviceId, day, month, year } = req.params;
-  getTrack = `SELECT * FROM tracking WHERE date = '${day}/${month}/${year}'`;
+  getTrack = `SELECT * FROM tracking WHERE date = '${day}/${month}/${year}' AND device_id = '${deviceId}'`;
+  db.query(getTrack, (err, fields) => {
+    if (err) throw err;
+    res.json({
+      deviceId: deviceId,
+      date: `${day}/${month}/${year}`,
+      data: fields,
+    });
+  });
+};
+const getMonitoringReport = (req, res) => {
+  const { deviceId, day, month, year } = req.params;
+  getTrack = `SELECT * FROM monitoring WHERE date = '${day}/${month}/${year}'  AND device_id = '${deviceId}'`;
   db.query(getTrack, (err, fields) => {
     if (err) throw err;
     res.json({
@@ -44,33 +56,30 @@ const getTrackReport = (req, res) => {
   });
 };
 
-const getMonitoringReport = (req, res) => {
-  const { deviceId, day, month, year } = req.params;
-  // getTrack = `SELECT * FROM monitoring WHERE date= '${date}' ORDER BY time ASC`
-  // getTrack = `SELECT DISTINCT date FROM monitoring;`
-  // getTrack = `SELECT time FROM monitoring WHERE date='${date}' GROUP BY time HAVING COUNT(*) = 1`
-  getHistory = `SELECT 
-     AVG(tegangan) AS tegangan,
-     AVG(arus) AS arus,
-     AVG(daya) AS daya,
-     AVG(baterai) AS baterai,
-     DATE_FORMAT(MIN(STR_TO_DATE(time, '%H.%i.%s')), '%H:%i:%s') AS waktu
-     FROM monitoring
-     WHERE 
-     device_id = '${deviceId}' 
-     AND date = '${day}/${month}/${year}'
-     AND HOUR(STR_TO_DATE(time, '%H.%i.%s')) BETWEEN 6 AND 18
-     GROUP BY date, HOUR(STR_TO_DATE(time, '%H.%i.%s'));`;
+// const getMonitoringReport = (req, res) => {
+//   const { deviceId, day, month, year } = req.params;
+//   getHistory = `SELECT 
+//      AVG(tegangan) AS tegangan,
+//      AVG(arus) AS arus,
+//      AVG(daya) AS daya,
+//      AVG(baterai) AS baterai,
+//      DATE_FORMAT(MIN(STR_TO_DATE(time, '%H.%i.%s')), '%H:%i:%s') AS waktu
+//      FROM monitoring
+//      WHERE 
+//      device_id = '${deviceId}' 
+//      AND date = '${day}/${month}/${year}'
+//      AND HOUR(STR_TO_DATE(time, '%H.%i.%s')) BETWEEN 6 AND 18
+//      GROUP BY date, HOUR(STR_TO_DATE(time, '%H.%i.%s'));`;
 
-  db.query(getHistory, (err, fields) => {
-    if (err) throw err;
-    res.json({
-      deviceId: deviceId,
-      date: `${day}/${month}/${year}`,
-      data: fields,
-    });
-  });
-};
+//   db.query(getHistory, (err, fields) => {
+//     if (err) throw err;
+//     res.json({
+//       deviceId: deviceId,
+//       date: `${day}/${month}/${year}`,
+//       data: fields,
+//     });
+//   });
+// };
 
 module.exports = {
   getReportData,

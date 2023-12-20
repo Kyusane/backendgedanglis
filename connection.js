@@ -1,16 +1,16 @@
-const mysql = require('mysql')
-const db = mysql.createConnection({
-     host :"127.0.0.1", 
-     user :"root",
-     password:"TVZ455r11zBlpFRl",
-     database:"mbkmgedanglis"
-})
-
+const mysql = require("mysql");
 // const db = mysql.createConnection({
-//      host :"127.0.0.1", 
+//      host :"127.0.0.1",
 //      user :"root",
-//      password:"",
-//      database: "mbkmgedanglis"
+//      password:"TVZ455r11zBlpFRl",
+//      database:"mbkmgedanglis"
 // })
 
-module.exports = db
+const db = mysql.createConnection({
+  host: "127.0.0.1",
+  user: "root",
+  password: "",
+  database: "mbkmgedanglis",
+});
+
+module.exports = db;

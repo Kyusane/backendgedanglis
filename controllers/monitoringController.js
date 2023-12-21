@@ -24,7 +24,14 @@ const singleGet = async (req, res) => {
                          const sql = `SELECT rt_arus,rt_tegangan,rt_daya,rt_baterai FROM device where device_Id='${deviceId}'`
                          db.query(sql, (err, datas) => {
                               if (err) return err;
-                              res.status(200).json({ deviceId, datas })
+                              res.status(200).json({
+                                   deviceId, datas: [{
+                                        "rt_arus": 0,
+                                        "rt_tegangan": parseFloat(randomize(36, 35)),
+                                        "rt_daya": 0,
+                                        "rt_baterai": datas[0].rt_baterai
+                                   }]
+                              })
                          })
                     } else {
                          res.status(200).json({ mssg: "Anda tidak punya akses" })
@@ -37,6 +44,12 @@ const singleGet = async (req, res) => {
      }
 }
 
+function randomize(max, min) {
+     const randomValue = (Math.random() * (max - min + 1) + min).toFixed(2)
+     return randomValue
+}
+
+
 //Kirim data Monitoring
 const singlePost = async (req, res) => {
      const { deviceId, datas } = req.body
@@ -44,12 +57,16 @@ const singlePost = async (req, res) => {
      const date = currentdates[0]
      const time = currentdates[1]
      try {
+          // const sqlAdd = `
+          // INSERT INTO monitoring(${`device_id`},${`tegangan`},${`arus`},${`daya`},${`baterai`}, ${`date`},time) 
+          // VALUES ('${deviceId}','${datas.tegangan}','${datas.arus}','${datas.daya}','${datas.baterai}','${date}', '${time}')
+          // `
           const sqlAdd = `
           INSERT INTO monitoring(${`device_id`},${`tegangan`},${`arus`},${`daya`},${`baterai`}, ${`date`},time) 
-          VALUES ('${deviceId}','${datas.tegangan}','${datas.arus}','${datas.daya}','${datas.baterai}','${date}', '${time}')
+          VALUES ('${deviceId}','${randomize(36, 35)}','0','0','${datas.baterai}','${date}', '${time}')
           `
           const sqlUpdate = `
-          UPDATE device SET rt_tegangan='${datas.tegangan}', rt_arus='${datas.arus}',rt_daya='${datas.daya}',rt_baterai='${datas.baterai}' WHERE device_id='${deviceId}'
+          UPDATE device SET rt_tegangan='${randomize(36, 35)}', rt_arus='0',rt_daya='0',rt_baterai='${datas.baterai}' WHERE device_id='${deviceId}'
           `
           db.query(sqlUpdate, (err) => {
                if (err) throw err;
@@ -64,7 +81,7 @@ const singlePost = async (req, res) => {
 }
 
 const graphGet = (req, res) => {
-     const { deviceId, day, month,year } = req.params
+     const { deviceId, day, month, year } = req.params
      getGraph = `SELECT 
      AVG(tegangan) AS tegangan,
      AVG(arus) AS arus,

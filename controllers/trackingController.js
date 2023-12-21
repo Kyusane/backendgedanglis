@@ -5,8 +5,8 @@ const jwt = require("jsonwebtoken");
 const trackingData = [
   {
     device_id: "GDL-001",
-    rt_lat: "-7.475555",
-    rt_long: "110.751536",
+    rt_lat: "-7.569426",
+    rt_long: "110.829716",
   },
   {
     device_id: "GDL-002",
